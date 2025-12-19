@@ -259,7 +259,8 @@ def main():
             continue
         print()
         if choice_num == 0:
-            print("Bye!\n")
+            print("Bye!")
+            menu_list[choice_num]['function']()
         menu_list[choice_num]['function'](movies)
         print()
         input(colored("Press enter to continue", 'yellow'))
