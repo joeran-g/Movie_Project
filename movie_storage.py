@@ -5,7 +5,7 @@ def get_movies():
     """
     Returns a dictionary of dictionaries that
     contains the movies information in the database.
-    The function loads the information from the JSON
+    The function loads the information from the SQL
     file and returns the data.
     """
     with open("movies_data.json", "r", encoding='utf-8') as movie_data:
@@ -15,7 +15,7 @@ def get_movies():
 
 def save_movies(movies):
     """
-    Gets all your movies as an argument and saves them to the JSON file.
+    Gets all your movies as an argument and saves them to the SQL file.
     """
     with open("movies_data.json", "w") as data:
         json.dump(movies, data)
@@ -24,7 +24,7 @@ def save_movies(movies):
 def add_movie(title, year, rating):
     """
     Adds a movie to the movies database.
-    Loads the information from the JSON file, add the movie,
+    Loads the information from the sql file, add the movie,
     and saves it. The function doesn't need to validate the input.
     """
     movies_dict = get_movies()

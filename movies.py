@@ -65,7 +65,7 @@ def add_movie(movies_dict):
     """
     Get a new movie name, rating and year by the user,
     check for valid inputs
-    add the new movie, rating and year to the json file
+    add the new movie, rating and year to the sql database
     """
     new_movie = get_movie_name("add").title()
     if new_movie not in movies_dict:
@@ -78,7 +78,7 @@ def add_movie(movies_dict):
 
 
 def delete_movie(movies_dict):
-    """Ask user for a movie, if it exists. delete it from the json file"""
+    """Ask user for a movie, if it exists. delete it from the sql database"""
     movie_to_delete = get_movie_name("delete").title()
     if movie_to_delete not in movies_dict:
         cprint(f"Movie '{movie_to_delete}' doesn't exist!", 'red')
@@ -89,7 +89,7 @@ def delete_movie(movies_dict):
 
 def update_movie(movies_dict):
     """
-    Update the rating of a existing Movie from the json file
+    Update the rating of a existing Movie from the sql database
     and check for wrong inputs
     """
     movie_to_update = get_movie_name("update")
@@ -171,7 +171,7 @@ def random_movie(movies_dict):
 def search_movie(movies_dict):
     """
     Ask the user for a movie title/part of title.
-    if no exact match (case insensitive) print titles,
+    if no exact match (case-insensitive) print titles,
     which are close to-/have part of the user search.
     """
     user_search = input(colored("Enter the full title, or part of a movie name: ", 'yellow'))
@@ -221,8 +221,8 @@ def create_histogram_from_dict(movies_dict):
 # Main Function start
 def main():
     """
-    Get a movie_dict from the json file, execute the chosen menu option.
-    safe the dictionary in the json file, if changes were made.
+    Get a movie_dict from the sql database, execute the chosen menu option
+    to change the sql table or show stats from the table.
     """
     menu_list = [
         {"name": "Exit",
