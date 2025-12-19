@@ -2,19 +2,18 @@
 import random
 import matplotlib.pyplot as plt
 from termcolor import colored, cprint
-import thefuzz as fuzz
 from rapidfuzz.fuzz import partial_ratio as _partial_ratio
-import movie_storage as mvi
+import movie_storage_sql as storage
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
 
 
-def show_menu(choices_list):
-    choice_num = 0
+def show_menu(choices_dict):
     cprint("Menu:", 'cyan')
-    for choice in choices_list:
-        cprint(f"{choice_num}. {choice}", 'green')
+    choice_num = 0
+    for choice in choices_dict:
+        cprint(f"{choice_num}. {choice['name']}", 'green')
         choice_num += 1
 
 
@@ -72,7 +71,7 @@ def add_movie(movies_dict):
     if new_movie not in movies_dict:
         new_movie_rating = get_rating()
         new_movie_year = get_year()
-        mvi.add_movie(new_movie, new_movie_year, new_movie_rating)
+        storage.add_movie(new_movie, new_movie_year, new_movie_rating)
         cprint(f"Movie '{new_movie}' successfully added!", 'cyan')
     else:
         cprint("This movie was already saved.", 'red')
@@ -84,7 +83,7 @@ def delete_movie(movies_dict):
     if movie_to_delete not in movies_dict:
         cprint(f"Movie '{movie_to_delete}' doesn't exist!", 'red')
     else:
-        mvi.delete_movie(movie_to_delete)
+        storage.delete_movie(movie_to_delete)
         cprint(f"Movie '{movie_to_delete}' successfully deleted", 'cyan')
 
 
@@ -96,7 +95,7 @@ def update_movie(movies_dict):
     movie_to_update = get_movie_name("update")
     if movie_to_update in movies_dict:
         new_rating = get_rating()
-        mvi.update_movie(movie_to_update, new_rating)
+        storage.update_movie(movie_to_update, new_rating)
         cprint(f"Movie '{movie_to_update}' successfully updated!", 'cyan')
     else:
         cprint(f"Movie '{movie_to_update}' doesn't exist!", 'red')
@@ -134,21 +133,23 @@ def show_stats(movies_dict):
         elif stats['rating'] == min_rating:
             worst_movies.append(movie)
     # Output all the movies with the worst/best ratings
-    if len(best_movies) > 1:
-        print("Best movies:")
-        for best_movie in best_movies:
-            print(f"{best_movie} ({movies_dict[best_movie]['year']}), {max_rating}")
-    else:
-        best_movie_year = movies_dict[best_movies[0]]['year']
-        print(f"Best movie: {best_movies[0]} ({best_movie_year}), {max_rating}")
+    if best_movies:
+        if len(best_movies) > 1:
+            print("Best movies:")
+            for best_movie in best_movies:
+                print(f"{best_movie} ({movies_dict[best_movie]['year']}), {max_rating}")
+        else:
+            best_movie_year = movies_dict[best_movies[0]]['year']
+            print(f"Best movie: {best_movies[0]} ({best_movie_year}), {max_rating}")
 
-    if len(worst_movies) > 1:
-        print("Worst movies:")
-        for worst_movie in worst_movies:
-            print(f"{worst_movie} ({movies_dict[worst_movie]['year']}), {min_rating}")
-    else:
-        worst_movie_year = movies_dict[worst_movies[0]]['year']
-        print(f"Worst movie: {worst_movies[0]} ({worst_movie_year}), {min_rating}")
+    if worst_movies:
+        if len(worst_movies) > 1:
+            print("Worst movies:")
+            for worst_movie in worst_movies:
+                print(f"{worst_movie} ({movies_dict[worst_movie]['year']}), {min_rating}")
+        else:
+            worst_movie_year = movies_dict[worst_movies[0]]['year']
+            print(f"Worst movie: {worst_movies[0]} ({worst_movie_year}), {min_rating}")
 
 
 def random_movie(movies_dict):
@@ -170,7 +171,7 @@ def random_movie(movies_dict):
 def search_movie(movies_dict):
     """
     Ask the user for a movie title/part of title.
-    if no exact match (case insentitive) print titles,
+    if no exact match (case insensitive) print titles,
     which are close to-/have part of the user search.
     """
     user_search = input(colored("Enter the full title, or part of a movie name: ", 'yellow'))
@@ -208,35 +209,13 @@ def create_histogram_from_dict(movies_dict):
         if rating not in ratings_dict:
             ratings_dict[rating] = 0
         ratings_dict[rating] += 1
-    plt.bar(list(ratings_dict.keys()), ratings_dict.values())
+    plt.bar(list(ratings_dict.keys()), list(ratings_dict.values()))
     plt.title('Ratings of current movies')
     plt.xlabel("Rating (1-10)")
     plt.ylabel("Movies with the same rating")
     safe_file = input(colored("In which file do you want to safe the Histogram? (.png by default):\n", 'yellow'))
     print(f"File '{safe_file}' successfully safed!")
     plt.savefig(safe_file)
-
-
-def menu_options(choice_num, movies_dict):
-    """Filter out which function to use, based on the choice_num"""
-    if choice_num == 1:
-        list_movies(movies_dict)
-    elif choice_num == 2:
-        add_movie(movies_dict)
-    elif choice_num == 3:
-        delete_movie(movies_dict)
-    elif choice_num == 4:
-        update_movie(movies_dict)
-    elif choice_num == 5:
-        show_stats(movies_dict)
-    elif choice_num == 6:
-        random_movie(movies_dict)
-    elif choice_num == 7:
-        search_movie(movies_dict)
-    elif choice_num == 8:
-        sort_by_rating(movies_dict)
-    elif choice_num == 9:
-        create_histogram_from_dict(movies_dict)
 
 
 # Main Function start
@@ -246,21 +225,31 @@ def main():
     safe the dictionary in the json file, if changes were made.
     """
     menu_list = [
-        "Exit",
-        "List movies",
-        "Add movie",
-        "Delete movie",
-        "Update movie",
-        "Stats",
-        "Random movie",
-        "Search movie",
-        "Movies sorted by rating",
-        "Create Rating Histogram"
+        {"name": "Exit",
+        "function": quit,},
+        {"name": "List movies",
+         "function": list_movies},
+        {"name": "Add movie",
+         "function": add_movie},
+        {"name": "Delete movie",
+         "function": delete_movie},
+        {"name": "Update movie",
+         "function": update_movie},
+        {"name": "Stats",
+         "function": show_stats},
+        {"name": "Random movie",
+         "function": random_movie},
+        {"name": "Search movie",
+         "function": search_movie},
+        {"name": "Movies sorted by rating",
+         "function": sort_by_rating},
+        {"name": "Create Rating Histogram",
+         "function": create_histogram_from_dict}
     ]
     cprint("********** My Movies Database **********\n", 'cyan')
 
     while True:
-        movies = mvi.get_movies()
+        movies = storage.list_movies()
         show_menu(menu_list)
         print()
         try:
@@ -271,13 +260,8 @@ def main():
         print()
         if choice_num == 0:
             print("Bye!\n")
-            break
-        elif 0 < choice_num < len(menu_list):
-            menu_options(choice_num, movies)
-            print()
-        else:
-            cprint("Invalid choice\n", 'red')
-            continue
+        menu_list[choice_num]['function'](movies)
+        print()
         input(colored("Press enter to continue", 'yellow'))
         print()
         continue

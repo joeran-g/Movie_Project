@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, text
+from termcolor import cprint
 
 # Define the database URL
 DB_URL = "sqlite:///movies.db"
@@ -16,7 +17,7 @@ with engine.connect() as connection:
             rating REAL NOT NULL
         )
     """))
-    connection.commit()
+
 
 
 def list_movies():
@@ -24,7 +25,6 @@ def list_movies():
     with engine.connect() as connection:
         result = connection.execute(text("SELECT title, year, rating FROM movies"))
         movies = result.fetchall()
-
     return {row[0]: {"year": row[1], "rating": row[2]} for row in movies}
 
 
@@ -34,10 +34,8 @@ def add_movie(title, year, rating):
         try:
             connection.execute(text("INSERT INTO movies (title, year, rating) VALUES (:title, :year, :rating)"),
                                {"title": title, "year": year, "rating": rating})
-            connection.commit()
-            print(f"Movie '{title}' added successfully.")
         except Exception as e:
-            print(f"Error: {e}")
+            cprint(f"Error: {e}", "red")
 
 
 def delete_movie(title):
@@ -46,10 +44,8 @@ def delete_movie(title):
         try:
             connection.execute(text("DELETE FROM movies WHERE title = :title"),
                                {"title": title})
-            connection.commit()
-            print(f"Movie '{title}' deleted successfully.")
         except Exception as e:
-            print(f"Error: {e}")
+            cprint(f"Error: {e}", "red")
 
 
 def update_movie(title, rating):
@@ -58,7 +54,5 @@ def update_movie(title, rating):
         try:
             connection.execute(text("UPDATE movies SET rating = :rating WHERE title = :title"),
                                {"rating": rating, "title": title})
-            connection.commit()
-            print(f"Movie {title} updated successfully.")
         except Exception as e:
-            print(f"Error: {e}")
+            cprint(f"Error: {e}", "red")
