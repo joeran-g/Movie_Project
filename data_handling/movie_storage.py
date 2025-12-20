@@ -8,7 +8,7 @@ def get_movies():
     The function loads the information from the SQL
     file and returns the data.
     """
-    with open("movies_data.json", "r", encoding='utf-8') as movie_data:
+    with open("../data/movies_data.json", "r", encoding='utf-8') as movie_data:
         movies_dict = json.loads(movie_data.read())
     return movies_dict
 
@@ -17,7 +17,7 @@ def save_movies(movies):
     """
     Gets all your movies as an argument and saves them to the SQL file.
     """
-    with open("movies_data.json", "w") as data:
+    with open("../data/movies_data.json", "w") as data:
         json.dump(movies, data)
 
 

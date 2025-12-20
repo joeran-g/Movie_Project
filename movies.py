@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 from termcolor import colored, cprint
 from rapidfuzz.fuzz import partial_ratio as _partial_ratio
 from urllib3.exceptions import RequestError
-import movie_storage_sql as storage
-import api_data_handling as api
-
+from Movie_Project.data_handling import api_data_handling as api, movie_storage_sql as storage
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
@@ -80,7 +78,7 @@ def update_movie(movies_dict):
     """
     movie_to_update = get_movie_name("update")
     if movie_to_update in movies_dict:
-        new_rating = get_rating()
+        new_rating = None
         storage.update_movie(movie_to_update, new_rating)
         cprint(f"Movie '{movie_to_update}' successfully updated!", 'cyan')
     else:
@@ -200,8 +198,32 @@ def create_histogram_from_dict(movies_dict):
     plt.xlabel("Rating (1-10)")
     plt.ylabel("Movies with the same rating")
     safe_file = input(colored("In which file do you want to safe the Histogram? (.png by default):\n", 'yellow'))
+    plt.savefig("data/" + safe_file)
     print(f"File '{safe_file}' successfully safed!")
-    plt.savefig(safe_file)
+
+
+
+def generate_website(movies_dict):
+    """
+    Replace a placeholder in a html template with a generated html-string
+    and generate the website as Movie-website-html.
+    """
+    generated_html = ""
+    for movie, data in movies_dict.items():
+        generated_html += f"""
+        <li class='movie-grid li'>
+                <div class='movie'>
+                    <img class='movie-poster' src={data['poster_url']} alt='poster image'/>
+                    <p class='movie-title'> {movie} </p>
+                    <p class='movie-year'> {data['year']} </p>
+                </div>
+        </li>\n
+            """
+    with open("_static/index_template.html", "r") as data:
+        template = data.read()
+        generated_site = template.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
+    with open("_static/movie_website.html", "w", encoding="utf8") as handle:
+        handle.write(generated_site)
 
 
 # Main Function start
@@ -230,7 +252,9 @@ def main():
         {"name": "Movies sorted by rating",
          "function": sort_by_rating},
         {"name": "Create Rating Histogram",
-         "function": create_histogram_from_dict}
+         "function": create_histogram_from_dict},
+        {"name": "Generate website",
+         "function": generate_website}
     ]
     cprint("\n********** My Movies Database **********\n", 'cyan')
 
@@ -241,7 +265,7 @@ def main():
         try:
             choice_num = int(input(colored(f"Enter choice (0-{len(menu_list) - 1}): ", 'yellow')))
         except ValueError:
-            cprint("No number from 0-9 found!", 'red')
+            cprint("No number from 0-10 found!", 'red')
             continue
         print()
         if choice_num == 0:
