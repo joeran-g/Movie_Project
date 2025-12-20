@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from termcolor import colored, cprint
 from rapidfuzz.fuzz import partial_ratio as _partial_ratio
 from urllib3.exceptions import RequestError
-from Movie_Project.data_handling import api_data_handling as api, movie_storage_sql as storage
+from Movie_Project.movie_storage import movie_storage_sql as storage, api_data_handling as api
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
