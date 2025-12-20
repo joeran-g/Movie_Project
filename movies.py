@@ -206,7 +206,7 @@ def create_histogram_from_dict(movies_dict):
 def generate_website(movies_dict):
     """
     Replace a placeholder in a html template with a generated html-string
-    and generate the website as Movie-website-html.
+    and generate the website as movie-website-html.
     """
     generated_html = ""
     for movie, data in movies_dict.items():
@@ -224,6 +224,7 @@ def generate_website(movies_dict):
         generated_site = template.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
     with open("_static/movie_website.html", "w", encoding="utf8") as handle:
         handle.write(generated_site)
+    cprint("Website was successfully generated!", 'cyan')
 
 
 # Main Function start
