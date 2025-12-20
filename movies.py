@@ -3,7 +3,10 @@ import random
 import matplotlib.pyplot as plt
 from termcolor import colored, cprint
 from rapidfuzz.fuzz import partial_ratio as _partial_ratio
+from urllib3.exceptions import RequestError
 import movie_storage_sql as storage
+import api_data_handling as api
+
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
@@ -36,43 +39,26 @@ def get_movie_name(menu_option="work with"):
         return name.title()
 
 
-def get_rating():
-    while True:
-        try:
-            rating = float(input(colored("Enter movie rating (0-10): ", 'yellow')))
-            if 0 <= rating <= 10:
-                return rating
-            else:
-                raise ValueError
-        except ValueError:
-            cprint("No valid rating!", 'red')
-
-
-def get_year():
-    """Ask the user to input a year and check if it's valid and return as int"""
-    while True:
-        try:
-            year = int(input(colored("Enter the release year: ", 'yellow')))
-            if FIRST_MOVIE_YEAR <= year <= CURRENT_YEAR + 1:
-                return year
-            else:
-                cprint("Please enter a valid year!", 'red')
-        except ValueError:
-            cprint("Please enter a valid number!", 'red')
-
-
 def add_movie(movies_dict):
     """
-    Get a new movie name, rating and year by the user,
-    check for valid inputs
-    add the new movie, rating and year to the sql database
+    Get a movie name by the user,
+    if the movie exists in the OMDb-API, fetch the data.
+    add the new movie, rating, year and image-url to the sql database.
     """
-    new_movie = get_movie_name("add").title()
-    if new_movie not in movies_dict:
-        new_movie_rating = get_rating()
-        new_movie_year = get_year()
-        storage.add_movie(new_movie, new_movie_year, new_movie_rating)
-        cprint(f"Movie '{new_movie}' successfully added!", 'cyan')
+    movie = get_movie_name("add").title()
+    if movie not in movies_dict:
+        try:
+            movie_data = api.get_movie_by_title(movie)
+            print(movie_data)
+            movie_rating = movie_data["imdbRating"]
+            movie_year = movie_data["Year"]
+            movie_img_url = movie_data["Poster"]
+            storage.add_movie(movie, movie_year, movie_rating, movie_img_url)
+            cprint(f"Movie '{movie}' successfully added!", 'cyan')
+        except RequestError:
+            cprint(f"Could not request movie named: {movie}", 'red')
+        except ConnectionError:
+            cprint("No connection to the api", 'red')
     else:
         cprint("This movie was already saved.", 'red')
 
@@ -246,7 +232,7 @@ def main():
         {"name": "Create Rating Histogram",
          "function": create_histogram_from_dict}
     ]
-    cprint("********** My Movies Database **********\n", 'cyan')
+    cprint("\n********** My Movies Database **********\n", 'cyan')
 
     while True:
         movies = storage.list_movies()
