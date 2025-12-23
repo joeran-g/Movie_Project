@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from termcolor import colored, cprint
 from rapidfuzz.fuzz import partial_ratio as _partial_ratio
 from urllib3.exceptions import RequestError
-from Movie_Project.movie_storage import movie_storage_sql as storage, api_data_handling as api
+from storage import movie_storage_sql as storage, api_data_handling as api
+from storage import user_data_handling as user
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
@@ -257,10 +258,16 @@ def main():
         {"name": "Generate website",
          "function": generate_website}
     ]
-    cprint("\n********** My Movies Database **********\n", 'cyan')
-
+    cprint("\n********** Welcome to the Movies app **********\n", 'cyan')
+    # User.DB menu; return user_id chosen
+    user_data = user.menu_action()
+    user_id = user_data[0]
+    user_name = user_data[user_id]
+    print(user_id, user_name)
+    # Movies.DB- menu for chosen user
+    cprint(f"\n********** {user_name}'s Movies Database **********\n", 'cyan')
     while True:
-        movies = storage.list_movies()
+        movies = storage.list_movies(user_id)
         show_menu(menu_list)
         print()
         try:
