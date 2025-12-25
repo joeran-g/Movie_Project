@@ -8,7 +8,6 @@ load_dotenv()
 API_KEY = os.environ.get('API_KEY')
 REQUEST_GET_URL = f"http://www.omdbapi.com/?apikey={API_KEY}&"
 
-
 def get_movie_by_title(title):
     """
     Fetch data from a movie by requesting the OMDb-API.

@@ -24,7 +24,7 @@ def save_movies(movies):
 def add_movie(title, year, rating):
     """
     Adds a movie to the movies database.
-    Loads the information from the sql file, add the movie,
+    Loads the information from the SQL file, add the movie,
     and saves it. The function doesn't need to validate the input.
     """
     movies_dict = get_movies()

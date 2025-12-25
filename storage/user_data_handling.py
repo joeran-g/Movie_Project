@@ -1,20 +1,45 @@
 from sqlalchemy import create_engine, text
 from termcolor import cprint, colored
-import storage.movie_storage_sql as storage
+from pathlib import Path
+
+# Ensure data folder exists
+data_path = Path(__file__).resolve().parent.parent / "data"
+data_path.mkdir(exist_ok=True)
+# Create path and user_engine
+db_file = data_path / "users.db"
+
+db_url = f"sqlite:///{db_file}"
+user_engine = create_engine(db_url)
 
 
-DB_URL = "sqlite:///../data/users.db"
+def init_user_table():
+    # Create the users table if it does not exist
+    with user_engine.begin() as connection:
+        try:
+            connection.execute(text("""
+                CREATE TABLE IF NOT EXISTS users (
+                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_name TEXT NOT NULL
+                );
+            """))
+            connection.commit()
+        except Exception as e:
+            cprint(f"Error: {e}", 'red')
+        return
 
-engine = create_engine(DB_URL)
 
-# Create the movies table if it does not exist
-with engine.connect() as connection:
-    connection.execute(text("""
-            CREATE TABLE IF NOT EXISTS users (
-            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_name TEXT NOT NULL
-        );
-    """))
+def get_user_data():
+    """
+    Ask the user for a user_id from the database and return it, if valid.
+    Returns: {user_id(int): user_name(str)}
+    """
+    with user_engine.connect() as user_connection:
+        try:
+            result = user_connection.execute(text("SELECT user_id, user_name FROM users;"))
+            user_data = result.fetchall()
+        except Exception as e:
+            print(f"Error: {e}")
+    return {row[0]: row[1] for row in user_data}
 
 
 def user_menu():
@@ -23,11 +48,11 @@ def user_menu():
     display users and create-user as menu.
     if a change on the user is wanted, return "change_users"
     to start the menu_action function.
-    return: {user_id: user_name}, chosen via number.
+    return: (user_id: user_name), chosen via number.
         OR: "change_users" if the highest menu number was chosen.
     """
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT user_id, user_name FROM users;"))
+    with user_engine.connect() as user_connection:
+        result = user_connection.execute(text("SELECT user_id, user_name FROM users;"))
         user_data = result.fetchall()
         user_list = [row[1] for row in user_data]
         user_ids = [row[0] for row in user_data]
@@ -49,58 +74,54 @@ def user_menu():
                     return "change_users"
                 elif choice_num == len(user_list) + 1:
                     return "back"
-                return {user_ids[choice_num]: user_list[choice_num]}
+                return (user_ids[choice_num], user_list[choice_num])
         except ValueError:
             cprint("Please enter a number from the menu!", 'red')
+        return
 
 
-def get_user_id():
+def get_user_id_menu():
     """
-    Ask the user for a user_id from the database and return it, if valid.
-    Returns: {user_id(int): user_name(str)}
+    Display users and user_id's ask the user for a user_id, until valid input is made.
+    return user_id(int)
     """
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT user_id, user_name FROM users;"))
-        user_data = result.fetchall()
-        user_ids = [row[0] for row in user_data]
-        user_list = [row[1] for row in user_data]
-        print(user_ids)
-        print(user_list)
-    # Display users and id's ask the user for an id and new_name, until valid input is made.
+    user_data = get_user_data()
     while True:
         cprint("\nUsers and id's: ", 'cyan')
         counter = 0
-        for user in user_list:
-            cprint(f"{user_ids[counter]}- {user}", 'green')
+        for user_id, user in user_data.items():
+            cprint(f"{user_id}- {user}", 'green')
             counter += 1
         # Get a valid user_id
         while True:
             try:
                 id_to_update = int(input(colored("\nSelect a user_id to change: ", 'yellow')))
-                if id_to_update in user_ids:
+                if id_to_update in user_data.keys():
                     return id_to_update
                 else:
                     raise ValueError
             except ValueError:
-                cprint("No valid id!", 'red')
+                cprint("No valid user_id!", 'red')
+            return
 
 
 def delete_user():
     """Delete a user from the database."""
-    user_id = get_user_id()
-    with engine.connect() as connection:
+    user_id = get_user_id_menu()
+    with user_engine.connect() as user_connection:
         try:
-            connection.execute(text("DELETE FROM users WHERE user_id = :id"),
+            user_connection.execute(text("DELETE FROM users WHERE user_id = :id"),
                                {"id": user_id})
-            connection.commit()
+            user_connection.commit()
             cprint("User deleted successfully", 'green')
         except Exception as e:
             cprint(f"Error: {e}", "red")
+        return
 
 
 def update_user():
     """Ask the user for a user's name in the database to update the name of it."""
-    user_id = get_user_id()
+    user_id = get_user_id_menu()
     new_name = ""
     while not new_name:
         new_name = input(colored("Please enter a new user name: ", 'yellow'))
@@ -108,30 +129,27 @@ def update_user():
     else:
         cprint("Id doesn't exist!\n", 'red')
     # Update the user_name with the chosen id
-    with engine.connect() as connection:
+    with user_engine.connect() as user_connection:
         try:
-            connection.execute(text("UPDATE users SET user_name = :new_name WHERE user_id = :user_id"),
+            user_connection.execute(text("UPDATE users SET user_name = :new_name WHERE user_id = :user_id"),
                                {"new_name": new_name, "user_id": user_id})
-            connection.commit()
+            user_connection.commit()
             cprint("User updated successfully", 'green')
         except Exception as e:
             cprint(f"Error: {e}", "red")
 
 
 def add_user():
-    """ Add a user to the database, Create a new movie database with user_id"""
+    """ Add a user to the database, Create a new movie database, when logging in the first time """
     new_user = ""
     while not new_user:
         new_user = input(colored("\nPlease enter a new user name: ", 'yellow'))
-    with engine.connect() as connection:
-        connection.execute(text("INSERT INTO users (user_name) VALUES (:user_name);"),
+    with user_engine.connect() as user_connection:
+        user_connection.execute(text("INSERT INTO users (user_name) VALUES (:user_name);"),
                             {"user_name": new_user})
-        connection.commit()
-        result = connection.execute(text("SELECT user_id from users WHERE user_name = :user_name;"),
-                                    {"user_name": new_user})
-        rows = result.fetchall()
-    storage.create_table(rows[0][0])
+        user_connection.commit()
     cprint("User added successfully", 'green')
+    return
 
 
 def option_menu(menu_dict):
@@ -165,7 +183,7 @@ def menu_action():
     Or display the CRUD menu.
     return a user_id for the main program to use, if a user was chosen.
 
-    Returns: {user_id(int): user_name(str)}
+    Returns: (user_id(int), user_name(str))
     """
     menu_functions = {0: {"name": "Exit",
                           "function":  quit},
@@ -190,4 +208,3 @@ def menu_action():
             return menu_choice
 
 
-menu_action()

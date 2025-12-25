@@ -1,11 +1,14 @@
 # Added Libraries
 import random
+from bdb import bar
+
 import matplotlib.pyplot as plt
-from termcolor import colored, cprint
-from rapidfuzz.fuzz import partial_ratio as _partial_ratio
 from urllib3.exceptions import RequestError
-from storage import movie_storage_sql as storage, api_data_handling as api
-from storage import user_data_handling as user
+from rapidfuzz.fuzz import partial_ratio as _partial_ratio
+from termcolor import colored, cprint
+from storage import (movie_storage_sql as storage,
+                     api_data_handling as api,
+                     user_data_handling as user)
 
 FIRST_MOVIE_YEAR = 1895
 CURRENT_YEAR = 2025
@@ -19,7 +22,10 @@ def show_menu(choices_dict):
         choice_num += 1
 
 
-def list_movies(movies_dict):
+def list_movies(movies_dict, engine=None, user_data=None):
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
     cprint(f"\n{len(movies_dict)} movies in total", 'cyan')
     for movie, stats in movies_dict.items():
         print(f"{movie} ({stats['year']}), {stats['rating']}")
@@ -38,21 +44,22 @@ def get_movie_name(menu_option="work with"):
         return name.title()
 
 
-def add_movie(movies_dict):
+def add_movie(movies_dict, user_data, engine):
     """
     Get a movie name by the user,
     if the movie exists in the OMDb-API, fetch the data.
-    add the new movie, rating, year and image-url to the sql database.
+    add the new movie, rating, year and image-url to the SQL database.
     """
+    if not movies_dict:
+        movies_dict = {}
     movie = get_movie_name("add").title()
     if movie not in movies_dict:
         try:
             movie_data = api.get_movie_by_title(movie)
-            print(movie_data)
             movie_rating = movie_data["imdbRating"]
             movie_year = movie_data["Year"]
             movie_img_url = movie_data["Poster"]
-            storage.add_movie(movie, movie_year, movie_rating, movie_img_url)
+            storage.add_movie(movie, movie_year, movie_rating, movie_img_url, user_data, engine)
             cprint(f"Movie '{movie}' successfully added!", 'cyan')
         except RequestError:
             cprint(f"Could not request movie named: {movie}", 'red')
@@ -62,38 +69,47 @@ def add_movie(movies_dict):
         cprint("This movie was already saved.", 'red')
 
 
-def delete_movie(movies_dict):
-    """Ask user for a movie, if it exists. delete it from the sql database"""
+def delete_movie(movies_dict, user_data, engine):
+    """Ask user for a movie, if it exists. delete it from the SQL database"""
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
     movie_to_delete = get_movie_name("delete").title()
     if movie_to_delete not in movies_dict:
         cprint(f"Movie '{movie_to_delete}' doesn't exist!", 'red')
     else:
-        storage.delete_movie(movie_to_delete)
+        storage.delete_movie(movie_to_delete, user_data, engine)
         cprint(f"Movie '{movie_to_delete}' successfully deleted", 'cyan')
 
 
-def update_movie(movies_dict):
+def update_movie(movies_dict, user_data, engine):
     """
-    Update the rating of a existing Movie from the sql database
+    Update the rating of an existing Movie from the SQL database
     and check for wrong inputs
     """
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
     movie_to_update = get_movie_name("update")
     if movie_to_update in movies_dict:
-        new_rating = None
-        storage.update_movie(movie_to_update, new_rating)
-        cprint(f"Movie '{movie_to_update}' successfully updated!", 'cyan')
+        new_comment = input(colored("Write a comment to add to the movie: ", 'yellow'))
+        try:
+            storage.update_movie(movie_to_update, new_comment, user_data, engine)
+            cprint(f"Movie '{movie_to_update}' successfully updated!", 'cyan')
+        except Exception as e:
+            cprint(f"Error: {e}", 'red')
     else:
         cprint(f"Movie '{movie_to_update}' doesn't exist!", 'red')
 
 
-def show_stats(movies_dict):
+def show_stats(movies_dict, user_data=None, engine=None):
     """
     Get the values of a dictionary and show average/median value
     and the best/worst value/s
     show an error and return if a wrong value is given
     """
     if not movies_dict:
-        cprint("No movies found!", 'red')
+        cprint("No Movies in your database yet!", 'red')
         return
     ratings_list = [stats['rating'] for stats in movies_dict.values()]
     # Average value + DivisionError check
@@ -137,13 +153,14 @@ def show_stats(movies_dict):
             print(f"Worst movie: {worst_movies[0]} ({worst_movie_year}), {min_rating}")
 
 
-def random_movie(movies_dict):
+def random_movie(movies_dict, user_data=None, engine=None):
     """
     Get a random number in the length of the dict and count down.
     the printed value is the current loop through the keys, when the nuber hits 0.
     """
     if not movies_dict:
-        cprint("No movies to choose from", 'red')
+        cprint("No Movies in your database yet!", 'red')
+        return
     random_number = random.randint(1, len(movies_dict))
     for movie, stats in movies_dict.items():
         random_number -= 1
@@ -153,12 +170,15 @@ def random_movie(movies_dict):
             break
 
 
-def search_movie(movies_dict):
+def search_movie(movies_dict, user_data=None, engine=None):
     """
     Ask the user for a movie title/part of title.
     if no exact match (case-insensitive) print titles,
     which are close to-/have part of the user search.
     """
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
     user_search = input(colored("Enter the full title, or part of a movie name: ", 'yellow'))
     correct_search = user_search.title() in movies_dict
     if correct_search:
@@ -176,8 +196,11 @@ def search_movie(movies_dict):
             cprint("No movie found", 'red')
 
 
-def sort_by_rating(movies_dict):
+def sort_by_rating(movies_dict, user_data=None, engine=None):
     """Filter out the key with the highest value for each loop on a safe copy"""
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
     copy_of_dict = movies_dict.copy()
     cprint("The top-bottom ratings are:", 'cyan')
     for loop in range(len(movies_dict)):
@@ -186,29 +209,37 @@ def sort_by_rating(movies_dict):
         del copy_of_dict[max_key]
 
 
-def create_histogram_from_dict(movies_dict):
+def create_histogram_from_dict(movies_dict, user_data, engine=None):
     """Create and safe a Histogram in a user-named File"""
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
+    user_id, user_name = user_data
     ratings_dict = {}
     for movie, stats in movies_dict.items():
         rating = stats['rating']
         if rating not in ratings_dict:
             ratings_dict[rating] = 0
         ratings_dict[rating] += 1
-    plt.bar(list(ratings_dict.keys()), list(ratings_dict.values()))
+    plt.bar(list(ratings_dict.keys()), list(ratings_dict.values()), align="center")
     plt.title('Ratings of current movies')
     plt.xlabel("Rating (1-10)")
     plt.ylabel("Movies with the same rating")
     safe_file = input(colored("In which file do you want to safe the Histogram? (.png by default):\n", 'yellow'))
-    plt.savefig("data/" + safe_file)
+    plt.savefig("data/" + user_name + "_" + safe_file)
     print(f"File '{safe_file}' successfully safed!")
 
 
-
-def generate_website(movies_dict):
+def generate_website(movies_dict, user_data, engine=None):
     """
-    Replace a placeholder in a html template with a generated html-string
+    Replace a placeholder in an HTML template with a generated html-string
     and generate the website as movie-website-html.
     """
+    if not movies_dict:
+        cprint("No Movies in your database yet!", 'red')
+        return
+    user_id, current_user = user_data
+    title = f"{current_user}'s Movie App"
     generated_html = ""
     for movie, data in movies_dict.items():
         generated_html += f"""
@@ -222,6 +253,7 @@ def generate_website(movies_dict):
             """
     with open("_static/index_template.html", "r") as data:
         template = data.read()
+        generated_site = template.replace("My", title)
         generated_site = template.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
     with open("_static/movie_website.html", "w", encoding="utf8") as handle:
         handle.write(generated_site)
@@ -231,12 +263,12 @@ def generate_website(movies_dict):
 # Main Function start
 def main():
     """
-    Get a movie_dict from the sql database, execute the chosen menu option
-    to change the sql table or show stats from the table.
+    Get a movie_dict from the SQL database, execute the chosen menu option
+    to change the SQL table or show stats from the table.
     """
     menu_list = [
         {"name": "Exit",
-        "function": quit,},
+         "function": None},
         {"name": "List movies",
          "function": list_movies},
         {"name": "Add movie",
@@ -258,28 +290,36 @@ def main():
         {"name": "Generate website",
          "function": generate_website}
     ]
+
+    user.init_user_table()
     cprint("\n********** Welcome to the Movies app **********\n", 'cyan')
     # User.DB menu; return user_id chosen
     user_data = user.menu_action()
-    user_id = user_data[0]
-    user_name = user_data[user_id]
-    print(user_id, user_name)
+    if not user_data:
+        quit()
+    user_id, user_name = user_data
+    # Set engine to db
+    engine = storage.set_engine(user_data)
+    # Create table if not already there
+    storage.create_table(user_data, engine)
     # Movies.DB- menu for chosen user
     cprint(f"\n********** {user_name}'s Movies Database **********\n", 'cyan')
     while True:
-        movies = storage.list_movies(user_id)
+        movies = storage.list_movies(user_data, engine)
         show_menu(menu_list)
         print()
         try:
             choice_num = int(input(colored(f"Enter choice (0-{len(menu_list) - 1}): ", 'yellow')))
         except ValueError:
-            cprint("No number from 0-10 found!", 'red')
+            cprint(f"No number from 0-{len(menu_list) - 1} found!", 'red')
             continue
+
         print()
         if choice_num == 0:
             print("Bye!")
-            menu_list[choice_num]['function']()
-        menu_list[choice_num]['function'](movies)
+            break
+        menu_list[choice_num]['function'](movies, user_data, engine)
+
         print()
         input(colored("Press enter to continue", 'yellow'))
         print()
