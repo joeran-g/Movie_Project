@@ -5,21 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="86d43143-afe9-4cf6-9291-21618aea41d4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqlDataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7f25c6f7-96cc-4d16-afb2-69bf769ac524/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqlDataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqlDataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_static/movie_website.html" beforeDir="false" afterPath="$PROJECT_DIR$/_static/movie_website.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/_static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/movies.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/1_movies.db" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/data/users.db" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/identifier.sqlite" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/movies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/api_data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/api_data_handling.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/storage/movie_storage_json.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/movie_storage_json.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/movie_storage_sql.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/movie_storage_sql.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/user_data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/user_data_handling.py" afterDir="false" />
     </list>
@@ -60,8 +57,12 @@
     <setting file="file://$USER_HOME$/Library/Python/3.9/lib/python/site-packages/sqlalchemy/pool/base.py" root0="SKIP_INSPECTION" />
     <setting file="file://$USER_HOME$/Library/Python/3.9/lib/python/site-packages/urllib3/__init__.py" root0="SKIP_INSPECTION" />
   </component>
+  <component name="MigrationScriptOptions">
+    <option name="ignoreImplicitObjects" value="true" />
+    <option name="ignoreSourceCode" value="false" />
+  </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -112,11 +113,12 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/data" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$USER_HOME$" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.movie_website.html">
+  <component name="RunManager" selected="Python.movies">
     <configuration name="movie_website.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Movie_Project/_static/movie_website.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
@@ -228,8 +230,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JavaScript Debug.movie_website.html" />
         <item itemvalue="Python.movies" />
+        <item itemvalue="JavaScript Debug.movie_website.html" />
         <item itemvalue="Python.api_data_handling" />
         <item itemvalue="Python.movie_storage_sql" />
         <item itemvalue="Python.user_data_handling" />
@@ -255,7 +257,7 @@
       <workItem from="1766503828672" duration="23000" />
       <workItem from="1766503852141" duration="24000" />
       <workItem from="1766515197368" duration="380000" />
-      <workItem from="1766515585379" duration="19871000" />
+      <workItem from="1766515585379" duration="31853000" />
     </task>
     <servers />
   </component>
@@ -267,6 +269,6 @@
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_sql.coverage" NAME="movie_storage_sql Coverage Results" MODIFIED="1766529558158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_json.coverage" NAME="movie_storage_json Coverage Results" MODIFIED="1766517552676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$api_data_handling.coverage" NAME="api_data_handling Coverage Results" MODIFIED="1766531077822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
-    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1766621409607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1766697562716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

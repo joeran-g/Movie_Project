@@ -1,3 +1,5 @@
+from storage import (movie_storage_sql as movie_storage)
+
 from sqlalchemy import create_engine, text
 from termcolor import cprint, colored
 from pathlib import Path
@@ -41,6 +43,11 @@ def get_user_data():
             print(f"Error: {e}")
     return {row[0]: row[1] for row in user_data}
 
+def get_user_name(user_id):
+    with user_engine.connect() as user_conn:
+        user_conn.execute(text("SELECT user_name FROM users WHERE user_id = :user_id;"),
+                          {"user_id": user_id})
+
 
 def user_menu():
     """
@@ -80,7 +87,20 @@ def user_menu():
         return
 
 
-def get_user_id_menu():
+def get_movie_name(menu_option="work with"):
+    """
+    Ask the user for a movie name until he enters a string.
+    optional string input for options
+    """
+    while True:
+        name = input(colored(f"Enter movie name to {menu_option}: ", 'yellow'))
+        if not name:
+            cprint("Invalid name!", 'red')
+            continue
+        return name.title()
+
+
+def get_user_id_menu(menu_choice="change"):
     """
     Display users and user_id's ask the user for a user_id, until valid input is made.
     return user_id(int)
@@ -95,7 +115,7 @@ def get_user_id_menu():
         # Get a valid user_id
         while True:
             try:
-                id_to_update = int(input(colored("\nSelect a user_id to change: ", 'yellow')))
+                id_to_update = int(input(colored(f"\nSelect a user_id to {menu_choice}: ", 'yellow')))
                 if id_to_update in user_data.keys():
                     return id_to_update
                 else:
@@ -107,7 +127,7 @@ def get_user_id_menu():
 
 def delete_user():
     """Delete a user from the database."""
-    user_id = get_user_id_menu()
+    user_id = get_user_id_menu("delete")
     with user_engine.connect() as user_connection:
         try:
             user_connection.execute(text("DELETE FROM users WHERE user_id = :id"),
@@ -116,12 +136,15 @@ def delete_user():
             cprint("User deleted successfully", 'green')
         except Exception as e:
             cprint(f"Error: {e}", "red")
-        return
+
+    # function below not tested completely
+    #movie_storage.delete_user_table(user_id)
+    return
 
 
 def update_user():
     """Ask the user for a user's name in the database to update the name of it."""
-    user_id = get_user_id_menu()
+    user_id = get_user_id_menu("update")
     new_name = ""
     while not new_name:
         new_name = input(colored("Please enter a new user name: ", 'yellow'))

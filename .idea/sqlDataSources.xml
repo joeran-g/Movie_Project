@@ -4,5 +4,41 @@
     <mapping uuid="ae0131aa-76e8-4fa4-8f3c-0d96cdd59e6f" name="identifier Mapping">
       <data-sources db="1d98a5db-eebe-4c61-bb1a-38af2de6f78f" ddl="4700f528-3d42-4e3a-883e-53ca869d7d53" />
     </mapping>
+    <mapping uuid="27b2f6ee-58bf-4633-9c26-94a9e89c020d" name="users Mapping">
+      <data-sources db="7f25c6f7-96cc-4d16-afb2-69bf769ac524" ddl="30123d46-94b1-4442-a00c-4af38db729e8" />
+      <scope>
+        <node kind="database" negative="1">
+          <node kind="schema" negative="1" />
+        </node>
+      </scope>
+    </mapping>
+  </component>
+  <component name="SqlDataSourceStorage">
+    <option name="dataSources">
+      <list>
+        <State>
+          <option name="id" value="2d9118ad-1467-4a29-986a-9bd36849d746" />
+          <option name="name" value="SQLite (DDL)" />
+          <option name="dbmsName" value="SQLITE" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/data" />
+            </array>
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+        <State>
+          <option name="id" value="4813b3fc-734c-4957-9de5-dbeef904225e" />
+          <option name="name" value="users" />
+          <option name="dbmsName" value="SQLITE" />
+          <option name="urls">
+            <array>
+              <option value="file://$PROJECT_DIR$/data/users.db" />
+            </array>
+          </option>
+          <option name="outLayout" value="File per object by schema.groovy" />
+        </State>
+      </list>
+    </option>
   </component>
 </project>
