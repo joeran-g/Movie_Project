@@ -251,11 +251,12 @@ def generate_website(movies_dict, user_id):
                 </div>
         </li>\n
             """
-    with open("_static/index_template.html", "r") as data:
+    with open("_static/index_template.html", "r", encoding="utf-8") as data:
         template = data.read()
         generated_site = template.replace("My", title_name)
         generated_site = generated_site.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
-    with open("_static/movie_website.html", "w", encoding="utf8") as handle:
+    file_path = f"_static/{user_name}.html"
+    with open(file_path, "w", encoding="utf8") as handle:
         handle.write(generated_site)
     cprint("Website was successfully generated!", 'cyan')
 
