@@ -33,8 +33,8 @@ def list_movies(movies_dict, user_id=None):
 
 def get_movie_name(menu_option="work with"):
     """
-    Ask the user for a movie name until he enters a string.
-    optional string input for options
+    Ask the user for a movie name until he enters something.
+    optional string input for different menu-options
     """
     while True:
         name = input(colored(f"Enter movie name to {menu_option}: ", 'yellow'))
@@ -48,7 +48,7 @@ def add_movie(movies_dict, user_id):
     """
     Get a movie name by the user,
     if the movie exists in the OMDb-API, fetch the data.
-    add the new movie, rating, year and image-url to the SQL database.
+    add the new movie, rating, year, image-url and a self created comment to the SQL database.
     """
     if not movies_dict:
         movies_dict = {}
@@ -236,10 +236,10 @@ def generate_website(movies_dict, user_id):
     and generate the website as movie-website-html.
     """
     user_name = user.get_user_name(user_id)
+    title_name = user_name + "'s"
     if not movies_dict:
         cprint("No Movies in your database yet!", 'red')
         return
-    title = f"{user_name}'s Movie App"
     generated_html = ""
     for movie, data in movies_dict.items():
         generated_html += f"""
@@ -253,8 +253,8 @@ def generate_website(movies_dict, user_id):
             """
     with open("_static/index_template.html", "r") as data:
         template = data.read()
-        generated_site = template.replace("My", title)
-        generated_site = template.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
+        generated_site = template.replace("My", title_name)
+        generated_site = generated_site.replace("__TEMPLATE_MOVIE_GRID__", generated_html)
     with open("_static/movie_website.html", "w", encoding="utf8") as handle:
         handle.write(generated_site)
     cprint("Website was successfully generated!", 'cyan')

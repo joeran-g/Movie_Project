@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="86d43143-afe9-4cf6-9291-21618aea41d4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7f25c6f7-96cc-4d16-afb2-69bf769ac524/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqlDataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqlDataSources.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_static/movie_website.html" beforeDir="false" afterPath="$PROJECT_DIR$/_static/movie_website.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/_static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/_static/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/1_movies.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/users.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/identifier.sqlite" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/movies_data.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/movies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storage/movie_storage_json.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/movie_storage_sql.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/movie_storage_sql.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/storage/user_data_handling.py" beforeDir="false" afterPath="$PROJECT_DIR$/storage/user_data_handling.py" afterDir="false" />
     </list>
@@ -257,7 +250,7 @@
       <workItem from="1766503828672" duration="23000" />
       <workItem from="1766503852141" duration="24000" />
       <workItem from="1766515197368" duration="380000" />
-      <workItem from="1766515585379" duration="31853000" />
+      <workItem from="1766515585379" duration="34310000" />
     </task>
     <servers />
   </component>
@@ -269,6 +262,6 @@
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_sql.coverage" NAME="movie_storage_sql Coverage Results" MODIFIED="1766529558158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_json.coverage" NAME="movie_storage_json Coverage Results" MODIFIED="1766517552676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$api_data_handling.coverage" NAME="api_data_handling Coverage Results" MODIFIED="1766531077822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
-    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1766697562716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1766750551905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

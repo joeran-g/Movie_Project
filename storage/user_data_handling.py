@@ -15,7 +15,7 @@ user_engine = create_engine(db_url)
 
 
 def init_user_table():
-    # Create the users table if it does not exist
+    """ Create the users table, if it does not exist """
     with user_engine.begin() as connection:
         try:
             connection.execute(text("""
@@ -43,10 +43,14 @@ def get_user_data():
             print(f"Error: {e}")
     return {row[0]: row[1] for row in user_data}
 
+
 def get_user_name(user_id):
+    """ Get the user_name from a single user_id """
     with user_engine.connect() as user_conn:
-        user_conn.execute(text("SELECT user_name FROM users WHERE user_id = :user_id;"),
+        result = user_conn.execute(text("SELECT user_name FROM users WHERE user_id = :user_id;"),
                           {"user_id": user_id})
+        rows = result.fetchall()
+        return rows[0][0]
 
 
 def user_menu():
@@ -136,9 +140,7 @@ def delete_user():
             cprint("User deleted successfully", 'green')
         except Exception as e:
             cprint(f"Error: {e}", "red")
-
-    # function below not tested completely
-    #movie_storage.delete_user_table(user_id)
+    movie_storage.delete_user_movies(user_id)
     return
 
 
@@ -160,6 +162,7 @@ def update_user():
             cprint("User updated successfully", 'green')
         except Exception as e:
             cprint(f"Error: {e}", "red")
+    return
 
 
 def add_user():
