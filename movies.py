@@ -66,6 +66,8 @@ def add_movie(movies_dict, user_id):
             cprint(f"Could not request movie named: {movie}", 'red')
         except ConnectionError:
             cprint("No connection to the api", 'red')
+        except KeyError:
+            cprint("Could not fetch all the data!")
     else:
         cprint("This movie was already saved.", 'red')
 
