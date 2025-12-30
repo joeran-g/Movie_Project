@@ -245,9 +245,10 @@ def generate_website(movies_dict, user_id):
         generated_html += f"""
         <li class='movie-grid li'>
                 <div class='movie'>
-                    <img class='movie-poster' src={data['poster_url']} alt='poster image'/>
+                    <a href='{data['poster_url']}' data-toggle="tooltip" data-placement="top" title='{data['comment']}'><img class='movie-poster' src='{data['poster_url']}' alt='Poster Image'/></a>
                     <p class='movie-title'> {movie} </p>
                     <p class='movie-year'> {data['year']} </p>
+                    <p class='movie-rating'> Rated {data['rating']} </p>
                 </div>
         </li>\n
             """

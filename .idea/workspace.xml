@@ -5,13 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="86d43143-afe9-4cf6-9291-21618aea41d4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4628a748-5747-4d88-b409-caa26ae7d64a.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/4628a748-5747-4d88-b409-caa26ae7d64a/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/5bdd4949-14fa-46d2-a80e-2616b7e613a0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/5bdd4949-14fa-46d2-a80e-2616b7e613a0/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/7f25c6f7-96cc-4d16-afb2-69bf769ac524.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ee23d3de-fe27-4864-9bce-4e0839a25ca1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ee23d3de-fe27-4864-9bce-4e0839a25ca1/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/fb6ffe43-d870-4b6f-8dc1-d426ed0c8a34.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/fb6ffe43-d870-4b6f-8dc1-d426ed0c8a34/storage_v2/_src_/schema/main.uQUzAA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_12_25__14_18__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_static/movie_website.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/_static/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/_static/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data/movies.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/movies.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/users.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_storage/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_storage/api_data_handling.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_storage/movie_storage_json.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie_storage/movie_storage_sql.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/movies.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +85,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;JavaScript Debug.Joeran.html.executor&quot;: &quot;Run&quot;,
     &quot;JavaScript Debug.movie_website.html.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;Python.api_data_handling.executor&quot;: &quot;Run&quot;,
@@ -123,6 +131,9 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.movies">
+    <configuration name="Joeran.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Movie_Project/_static/Joeran.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="movie_website.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Movie_Project/_static/movie_website.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
@@ -200,45 +211,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="user_data_handling" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="Movie_Project" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="SDK_NAME" value="Python 3.9" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/storage" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="RUN_TOOL" value="" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/storage/user_data_handling.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
+      <item itemvalue="JavaScript Debug.Joeran.html" />
       <item itemvalue="JavaScript Debug.movie_website.html" />
       <item itemvalue="Python.api_data_handling" />
       <item itemvalue="Python.movie_storage_sql" />
       <item itemvalue="Python.movies" />
-      <item itemvalue="Python.user_data_handling" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.movies" />
+        <item itemvalue="JavaScript Debug.Joeran.html" />
         <item itemvalue="JavaScript Debug.movie_website.html" />
         <item itemvalue="Python.api_data_handling" />
         <item itemvalue="Python.movie_storage_sql" />
-        <item itemvalue="Python.user_data_handling" />
       </list>
     </recent_temporary>
   </component>
@@ -273,6 +259,6 @@
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_sql.coverage" NAME="movie_storage_sql Coverage Results" MODIFIED="1766529558158" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$movie_storage_json.coverage" NAME="movie_storage_json Coverage Results" MODIFIED="1766517552676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
     <SUITE FILE_PATH="coverage/Movie_Project$api_data_handling.coverage" NAME="api_data_handling Coverage Results" MODIFIED="1766531077822" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/storage" />
-    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1766755761772" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Movie_Project$movies.coverage" NAME="movies Coverage Results" MODIFIED="1767119962861" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
